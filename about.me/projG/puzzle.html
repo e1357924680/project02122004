@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة بازيل - تجميع صورة</title>
+    <style>
+        /* رأس الصفحة */
+        header {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .home-button,
+        .contact-icon {
+            background-color: #ffdd59;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .home-button:hover,
+        .contact-icon:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            background-color: #670c71;
+            padding: 20px;
+        }
+
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        #game-container {
+            width: 350px;
+            height: 350px;
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-template-rows: repeat(9, 1fr);
+            gap: 2px;
+            border: 2px solid #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .puzzle-piece {
+            width: 100%;
+            height: 100%;
+            background-size: 450px 450px;
+            cursor: pointer;
+        }
+
+        .empty {
+            background: #f0f0f0;
+        }
+
+        .selected {
+            border: 3px solid #00f;
+            /* إطار أزرق للإشارة إلى أن القطعة محددة */
+            box-shadow: 0 0 10px #00f;
+            /* تأثير إضافي لتوضيح التحديد */
+        }
+
+        #upload-image {
+            margin-top: 5%;
+            margin-bottom: 1%;
+            align-items: center;
+            text-align: center;
+        }
+
+        #original-image {
+            width: 350px;
+            height: 350px;
+            border: 2px solid #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            background-color: #fff;
+        }
+
+        #original-container {
+            text-align: center;
+        }
+
+        #original-container p {
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: moveBall 5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(100px, 100px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* فهرس الألعاب */
+        .horizontal-sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #ffdd59;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .game-link:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background" id="background">
+        <header>
+            <img src="img/logo.png" alt="اللوجو" class="logo"> <!-- اللوجو -->
+            <button class="home-button" onclick="goToHomePage()">🏠 דף ראשי 🏠</button>
+            <button class="contact-icon" onclick="sendContactMessage()">✉️ הודעה ✉️</button> <!-- زر الرسالة -->
+        </header>
+
+        <input type="file" id="upload-image" accept="image/*">
+        <div id="container">
+            <div id="original-container">
+                <img id="original-image" src="" alt="התמונה הנבחרת">
+            </div>
+            <div id="game-container">
+                <!-- سيتم إضافة قطع البازيل هنا بواسطة JavaScript -->
+            </div>
+        </div>
+        <div class="horizontal-sidebar">
+            <a href="xo.html" class="game-link">XO</a>
+            <a href="chess.html" class="game-link">שחמט</a>
+            <a href="dama.html" class="game-link">דמקה</a>
+            <a href="puzzle.html" class="game-link">פאזל</a>
+            <a href="taki.html" class="game-link">טאקי</a>
+            <a href="hengedMan.html" class="game-link">האיש התלוי</a>
+            <a href="snake.html" class="game-link">נחש</a>
+        </div>
+
+    </div>
+    <script>
+        function goToHomePage() {
+            window.location.href = "GameCenter.html";
+        }
+
+        function sendContactMessage() {
+            const name = prompt("מה שמך?"); // إدخال الاسم
+            const email = prompt("כתובת האימייל שלך?"); // إدخال الإيميل
+            const message = prompt("הודעתך?"); // إدخال الرسالة
+
+            if (!name || !email || !message) {
+                showMessage("יש למלא את כל השדות!"); // رسالة إذا لم يتم تعبئة الحقول
+                return;
+            }
+
+            showMessage(`תודה ${name}, ההודעה נשלחה!`);
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.innerText = message;
+            messageBox.classList.add("show");
+            setTimeout(() => messageBox.classList.remove("show"), 2000);
+        }
+
+        function addBalls() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                ball.style.left = `${Math.random() * 100}%`;
+                ball.style.top = `${Math.random() * 100}%`;
+                ball.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                ball.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                background.appendChild(ball);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', addBalls);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const puzzleBoard = document.getElementById('game-container');
+            const uploadImageInput = document.getElementById('upload-image');
+            const originalImageElement = document.getElementById('original-image');
+            let imageUrl = '';
+
+            uploadImageInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imageUrl = e.target.result;
+                        originalImageElement.src = imageUrl; // إظهار الصورة الأصلية
+                        setupPuzzle(imageUrl);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            function setupPuzzle(imageUrl) {
+                puzzleBoard.innerHTML = ''; // إعادة تعيين اللوحة
+                let pieces = [];
+
+                // إنشاء مؤشرات القطع (عددها 81 قطعة)
+                for (let i = 0; i < 81; i++) {
+                    pieces.push(i);
+                }
+
+                // مزج القطع بشكل عشوائي
+                pieces = pieces.sort(() => Math.random() - 0.5);
+
+                // إنشاء القطع وإضافتها إلى اللوحة
+                pieces.forEach((index, position) => {
+                    const piece = document.createElement('div');
+                    piece.classList.add('puzzle-piece');
+                    if (index !== 80) { // القطعة الأخيرة ستكون فارغة
+                        piece.style.backgroundImage = `url(${imageUrl})`;
+                        const row = Math.floor(index / 9);
+                        const col = index % 9;
+                        piece.style.backgroundPosition = `-${col * 50}px -${row * 50}px`;
+                    } else {
+                        piece.classList.add('empty');
+                    }
+                    piece.dataset.index = index;
+                    piece.dataset.position = position;
+                    puzzleBoard.appendChild(piece);
+                });
+
+                addPieceMovement();
+            }
+
+            function addPieceMovement() {
+                let firstSelectedPiece = null;
+
+                puzzleBoard.addEventListener('click', (event) => {
+                    const clickedPiece = event.target;
+
+                    // التحقق من أن القطعة المحددة صالحة (ليست اللوحة نفسها)
+                    if (!clickedPiece.classList.contains('puzzle-piece')) {
+                        return;
+                    }
+
+                    // إذا كانت هناك قطعة محددة بالفعل، قم بإلغاء تحديدها
+                    if (firstSelectedPiece) {
+                        // إذا كانت القطعة التي تم النقر عليها هي نفسها القطعة المحددة مسبقًا، قم بإلغاء التحديد
+                        if (firstSelectedPiece === clickedPiece) {
+                            firstSelectedPiece.classList.remove('selected');
+                            firstSelectedPiece = null;
+                            return;
+                        }
+
+                        // تعيين القطعة الثانية
+                        const secondSelectedPiece = clickedPiece;
+                        secondSelectedPiece.classList.add('selected');
+
+                        // تبديل القطعتين
+                        swapPieces(firstSelectedPiece, secondSelectedPiece);
+
+                        // إلغاء التحديد بعد التبديل
+                        firstSelectedPiece.classList.remove('selected');
+                        secondSelectedPiece.classList.remove('selected');
+                        firstSelectedPiece = null;
+                    } else {
+                        // تعيين القطعة الأولى المحددة
+                        firstSelectedPiece = clickedPiece;
+                        firstSelectedPiece.classList.add('selected');
+                    }
+                });
+            }
+
+            function swapPieces(piece1, piece2) {
+                // حفظ البيانات والمحتوى لكل قطعة
+                const tempIndex = piece1.dataset.index;
+                const tempPosition = piece1.dataset.position;
+                const tempBackground = piece1.style.backgroundImage;
+                const tempBackgroundPosition = piece1.style.backgroundPosition;
+
+                // تبادل البيانات والمحتوى
+                piece1.dataset.index = piece2.dataset.index;
+                piece1.dataset.position = piece2.dataset.position;
+                piece1.style.backgroundImage = piece2.style.backgroundImage;
+                piece1.style.backgroundPosition = piece2.style.backgroundPosition;
+
+                piece2.dataset.index = tempIndex;
+                piece2.dataset.position = tempPosition;
+                piece2.style.backgroundImage = tempBackground;
+                piece2.style.backgroundPosition = tempBackgroundPosition;
+            }
+        });
+    </script>
+</body>
+
+</html>

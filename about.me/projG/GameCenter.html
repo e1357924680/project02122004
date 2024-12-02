@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אתר המשחקים הקטנים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #670c71;
+            color: #333;
+            text-align: center;
+            direction: rtl;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            font-size: 2rem;
+        }
+
+        .games-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            width: 200px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+        }
+
+        .game-card a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .game-card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        /* رأس الصفحة */
+        .df {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 5px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            /* توزيع العناصر بشكل عمودي */
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 20px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-message {
+            margin-top: 10px;
+            /* إضافة مسافة بين النص والأزرار */
+            font-size: 1.2rem;
+        }
+
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .home-button,
+        .contact-icon {
+            background-color: #ffdd59;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .home-button:hover,
+        .contact-icon:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: moveBall 5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(100px, 100px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        #message {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .micons {
+            margin-top: 10%
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="df">
+            <button class="contact-icon" onclick="sendContactMessage()">✉️ הודעה ✉️</button> <!-- زر الرسالة -->
+            <img src="img/logo.png" alt="اللوجو" class="logo"> <!-- اللوجو -->
+            <button class="home-button" onclick="goToHomePage()">🤔 מי אני 🤔</button> <!-- زر "من أنا" -->
+        </div>
+        <div class="welcome-message">
+            <p>ברוכים הבאים לאתר המשחקים הקטנים</p> <!-- النص الترحيبي -->
+        </div>
+    </header>
+
+    <div class="micons">
+        <div class="games-list">
+            <div class="game-card">
+                <a href="xo.html">
+                    <img src="img/xo.png" alt="משחק איקס עיגול">
+                    <div>משחק איקס עיגול</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="chess.html">
+                    <img src="img/chess.png" alt="משחק שחמט">
+                    <div>משחק שחמט</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="dama.html">
+                    <img src="img/dama.png" alt="משחק דמקה">
+                    <div>משחק דמקה</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="puzzle.html">
+                    <img src="img/puzzle.png" alt="פאזל תמונות">
+                    <div>פאזל תמונות</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="taki.html">
+                    <img src="img/taki.png" alt="משחק טאקי">
+                    <div>משחק טאקי</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="hengedMan.html">
+                    <img src="img/Hangedman.png" alt="משחק איש תלוי">
+                    <div>משחק איש תלוי</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="snake.html">
+                    <img src="img/snake.png" alt="משחק סנייק">
+                    <div>משחק סנייק</div>
+                </a>
+            </div>
+            <div class="game-card">
+                <a href="gallery.html">
+                    <img src="img/pic4.png" alt="גלריית תמונות">
+                    <div>גלריית תמונות</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function goToHomePage() {
+            window.location.href = "../AboutMe.html";
+        }
+
+        function sendContactMessage() {
+            const name = prompt("מה שמך?"); // إدخال الاسم
+            const email = prompt("כתובת האימייל שלך?"); // إدخال الإيميل
+            const message = prompt("הודעתך?"); // إدخال الرسالة
+
+            if (!name || !email || !message) {
+                showMessage("יש למלא את כל השדות!"); // رسالة إذا لم يتم تعبئة الحقول
+                return;
+            }
+
+            showMessage(`תודה ${name}, ההודעה נשלחה!`);
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.innerText = message;
+            messageBox.classList.add("show");
+            setTimeout(() => messageBox.classList.remove("show"), 2000);
+        }
+
+        function addBalls() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                ball.style.left = `${Math.random() * 100}%`;
+                ball.style.top = `${Math.random() * 100}%`;
+                ball.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                ball.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                background.appendChild(ball);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', addBalls);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק דאמא</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin-top: 15%;
+            background-color: #670c71;
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            justify-content: center;
+            padding: 20%;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+            margin-top: -10%;
+            background-color: #670c71;
+
+
+        }
+
+        canvas {
+            margin-top: 20px;
+            border: 2px solid #333;
+        }
+
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: moveBall 5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(100px, 100px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* رأس الصفحة */
+        header {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .home-button,
+        .contact-icon {
+            background-color: #ffdd59;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .home-button:hover,
+        .contact-icon:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* فهرس الألعاب */
+        .horizontal-sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #ffdd59;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .game-link:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background" id="background">
+        <header>
+            <img src="img/logo.png" alt="اللوجو" class="logo"> <!-- اللوجو -->
+            <button class="home-button" onclick="goToHomePage()">🏠 דף ראשי  🏠</button>
+            <button class="contact-icon" onclick="sendContactMessage()">✉️ הודעה ✉️</button> <!-- زر الرسالة -->
+        </header>
+
+        <div id="game-container">
+            <canvas id="board" width="400" height="400"></canvas>
+            <div id="status"></div>
+        </div>
+        <div class="horizontal-sidebar">
+            <a href="xo.html" class="game-link">XO</a>
+            <a href="chess.html" class="game-link">שחמט</a>
+            <a href="dama.html" class="game-link">דמקה</a>
+            <a href="puzzle.html" class="game-link">פאזל</a>
+            <a href="taki.html" class="game-link">טאקי</a>
+            <a href="hengedMan.html" class="game-link">האיש התלוי</a>
+            <a href="snake.html" class="game-link">נחש</a>
+        </div>
+
+    </div>
+    <script>
+        function goToHomePage() {
+            window.location.href = "GameCenter.html";
+        }
+
+        function sendContactMessage() {
+            const name = prompt("מה שמך?"); // إدخال الاسم
+            const email = prompt("כתובת האימייל שלך?"); // إدخال الإيميل
+            const message = prompt("הודעתך?"); // إدخال الرسالة
+
+            if (!name || !email || !message) {
+                showMessage("יש למלא את כל השדות!"); // رسالة إذا لم يتم تعبئة الحقول
+                return;
+            }
+
+            showMessage(`תודה ${name}, ההודעה נשלחה!`);
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.innerText = message;
+            messageBox.classList.add("show");
+            setTimeout(() => messageBox.classList.remove("show"), 2000);
+        }
+
+        class CheckersGame {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.boardSize = 8;
+                this.squareSize = this.canvas.width / this.boardSize;
+                this.board = [];
+                this.selectedPiece = null;
+                this.currentPlayer = 'B'; // Start with black player
+                this.statusDiv = document.getElementById('status');
+                this.initBoard();
+                this.drawBoard();
+                this.updateStatus();
+                this.canvas.addEventListener('click', this.handleClick.bind(this));
+            }
+
+            initBoard() {
+                // Initialize the board with pieces
+                for (let row = 0; row < this.boardSize; row++) {
+                    this.board[row] = [];
+                    for (let col = 0; col < this.boardSize; col++) {
+                        if (row < 3 && (row + col) % 2 === 1) {
+                            this.board[row][col] = 'B'; // Black piece
+                        } else if (row > 4 && (row + col) % 2 === 1) {
+                            this.board[row][col] = 'R'; // Red piece
+                        } else {
+                            this.board[row][col] = null;
+                        }
+                    }
+                }
+            }
+
+            drawBoard() {
+                // Draw the board and pieces
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                for (let row = 0; row < this.boardSize; row++) {
+                    for (let col = 0; col < this.boardSize; col++) {
+                        const isDark = (row + col) % 2 === 1;
+                        this.ctx.fillStyle = isDark ? '#b58863' : '#f0d9b5';
+                        this.ctx.fillRect(col * this.squareSize, row * this.squareSize, this.squareSize, this.squareSize);
+
+                        if (this.board[row][col]) {
+                            this.drawPiece(row, col, this.board[row][col]);
+                        }
+                    }
+                }
+            }
+
+            drawPiece(row, col, player) {
+                this.ctx.fillStyle = player === 'B' ? 'black' : 'red';
+                this.ctx.beginPath();
+                this.ctx.arc(
+                    col * this.squareSize + this.squareSize / 2,
+                    row * this.squareSize + this.squareSize / 2,
+                    this.squareSize / 2.5,
+                    0,
+                    2 * Math.PI
+                );
+                this.ctx.fill();
+            }
+
+            handleClick(event) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                const col = Math.floor(x / this.squareSize);
+                const row = Math.floor(y / this.squareSize);
+
+                if (this.selectedPiece) {
+                    if (this.isValidMove(row, col)) {
+                        this.movePiece(row, col);
+                    } else {
+                        this.selectedPiece = null;
+                    }
+                    this.drawBoard();
+                } else if (this.board[row][col] && this.board[row][col][0] === this.currentPlayer) {
+                    this.selectedPiece = { row, col };
+                }
+            }
+
+            isValidMove(row, col) {
+                if (this.board[row][col] !== null) {
+                    return false;
+                }
+                const rowDiff = Math.abs(this.selectedPiece.row - row);
+                const colDiff = Math.abs(this.selectedPiece.col - col);
+                if (rowDiff === 1 && colDiff === 1) {
+                    return true;
+                }
+                if (rowDiff === 2 && colDiff === 2) {
+                    const middleRow = (this.selectedPiece.row + row) / 2;
+                    const middleCol = (this.selectedPiece.col + col) / 2;
+                    if (this.board[middleRow][middleCol] && this.board[middleRow][middleCol][0] !== this.currentPlayer) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            movePiece(row, col) {
+                if (Math.abs(this.selectedPiece.row - row) === 2) {
+                    const middleRow = (this.selectedPiece.row + row) / 2;
+                    const middleCol = (this.selectedPiece.col + col) / 2;
+                    this.board[middleRow][middleCol] = null; // Remove opponent piece
+                }
+                this.board[row][col] = this.board[this.selectedPiece.row][this.selectedPiece.col];
+                this.board[this.selectedPiece.row][this.selectedPiece.col] = null;
+                this.selectedPiece = null;
+                this.togglePlayer();
+                this.updateStatus();
+            }
+
+            togglePlayer() {
+                this.currentPlayer = this.currentPlayer === 'B' ? 'R' : 'B';
+            }
+
+            updateStatus() {
+                this.statusDiv.textContent = this.currentPlayer === 'B' ? "התור של האדום" : "תור של השחור";
+            }
+        }
+
+        // Initialize the game
+        const game = new CheckersGame('board');
+
+        function addBalls() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                ball.style.left = `${Math.random() * 100}%`;
+                ball.style.top = `${Math.random() * 100}%`;
+                ball.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                ball.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                background.appendChild(ball);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', addBalls);
+
+    </script>
+</body>
+
+</html>

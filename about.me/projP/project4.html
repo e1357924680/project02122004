@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="he" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Here & Now</title>
+    <style>
+        /* إعدادات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            direction: rtl; /* الكتابة من اليمين لليسار */
+        }
+
+        /* الخلفية المتدرجة */
+        .container {
+            height: 100%;
+            background: linear-gradient(to bottom, #035398, #35f568); /* الألوان المتدرجة */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: #ffffff;
+            font-family: 'Lobster', cursive;
+        }
+
+        p {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* مسافة بين الحقول */
+        }
+
+        form div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+    text-align: right;
+    display: block;
+
+            font-size: 14px;
+            color: white;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        form input {
+            width: 250px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: transparent; /* إزالة الخلفية من الحقول */
+        }
+
+        form button {
+            width: 150px;
+            padding: 10px;
+            background-color: #b6d6d7;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        form button:hover {
+            background-color: #4FACFE;
+        }
+
+        /* تأثيرات عند التمرير */
+        input, button {
+            transition: all 0.3s ease;
+        }
+
+        input:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.7);
+        }
+
+        /* تحسين التصميم للشاشات الصغيرة */
+        @media (max-width: 600px) {
+            form {
+                flex-direction: column; /* ترتيب الحقول بشكل عمودي */
+                gap: 15px; /* مسافة بين الحقول */
+            }
+
+            form input, form button {
+                width: 100%; /* عرض كامل */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Here & Now</h1>
+            <p>רצינו להזמין אתכם להנות משלל מתנות</p>
+            <p>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוקו בלוקריה.</p> <!-- النص باللغة العبرية -->
+           
+            <form>
+                <div>
+                    <label for="name">שמך</label>
+                    <input id="name" type="text" placeholder="שמך" required>
+                </div>
+                <div>
+                    <label for="email">האימייל שלך</label>
+                    <input id="email" type="email" placeholder="האימייל שלך" required>
+                </div>
+                <div><br><button type="submit">שלח</button></div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

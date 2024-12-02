@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="he" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תן לנו להוביל אותך קדימה</title>
+    <style>
+        /* إعدادات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            /* الكتابة من اليمين لليسار */
+        }
+
+        /* الخلفية المتدرجة */
+        .container {
+            height: 75%;
+            background-image: url('img/Path15.png');
+            background-size: cover;
+            background-position: bottom center;
+            /* يعرض الجزء السفلي من الصورة */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+
+
+        .content {
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: yellow;
+            font-family: 'Lobster', cursive;
+        }
+
+        p {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            text-align: right;
+            display: block;
+            font-size: 14px;
+            color: yellow;
+            margin-bottom: 5px;
+            position: relative;
+            box-shadow: 0 0 0 black;
+
+        }
+
+        form input {
+            width: 250px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: transparent;
+            /* إزالة الخلفية من الحقول */
+        }
+
+        form button {
+            width: 150px;
+            padding: 10px;
+            background-color: #b6d6d7;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        form button:hover {
+            background-color: #4FACFE;
+        }
+
+        /* تأثيرات عند التمرير */
+        input,
+        button {
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.7);
+        }
+
+        /* تحسين التصميم للشاشات الصغيرة */
+        @media (max-width: 600px) {
+            
+            .container {
+                height: 55%;
+            background-image: url('img/Path15.png');
+            background-size: cover;
+            background-position: top center;
+            }
+
+            .downfc h1 {
+                gap: 0%;
+                margin-top: 0%;
+                font-size: 18px;
+                /* تصغير حجم العنوان */
+            }
+
+            .downfc p {
+                font-size: 12px;
+                /* تصغير حجم الفقرات */
+            }
+
+            form {
+                background-position: center top;
+                /* رفع الصورة لأعلى */
+                gap: 10%;
+                flex-direction: column;
+                /* تغيير الاتجاه إلى عمودي */
+                align-items: stretch;
+                /* جعل الخانات تأخذ العرض الكامل */
+            }
+
+            form input,
+            form button {
+                width: 100%;
+                margin-bottom: 10px;
+                /* إضافة مسافة بين الخانات */
+            }
+        }
+
+        .downfc {
+            position: fixed;
+            bottom: 5%;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .downfc form {
+            display: flex;
+            justify-content: space-between;
+            gap: 10%;
+        }
+
+        .downfc input,
+        .downfc button {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: yellow;
+
+        }
+
+        .downfc button {
+            background-color: #FFEB3B;
+            /* لون أصفر */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .downfc button:hover {
+            background-color: #FBC02D;
+            /* لون أصفر أغمق عند التمرير */
+        }
+
+        .downfc input {
+            padding: 10px;
+            border: none;
+            border-bottom: 2px solid #FFEB3B;
+            /* قاع أصفر */
+            border-radius: 0;
+            /* يجعل الزوايا حادة */
+            font-size: 16px;
+            outline: none;
+            /* إزالة التأثير الافتراضي عند التركيز */
+            background-color: #ccc;
+        }
+
+        .downfc input:focus {
+            border-bottom: 2px solid #FBC02D;
+            /* قاع أصفر أغمق عند التركيز */
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+            /* تأثير خفيف عند التركيز */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>תן לנו להוביל אותך קדימה</h1>
+            <p>לורם איפסום או בקיצור ליפסום, הוא מלל מקובל וחסר משמעות המשמש “ממלא מקום” בעת עריכ.</p>
+            <div class="downfc">
+                <form>
+                    <div>
+                        <label for="name">שמך</label>
+                        <input id="name" type="text" required>
+                    </div>
+                    <div>
+                        <label for="email">האימייל שלך</label>
+                        <input id="email" type="email" required>
+                    </div>
+                    <div><br><button type="submit">שלח</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

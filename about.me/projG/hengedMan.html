@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #670c71;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #game-container {
+            padding: 40%;
+            padding-top: 0%;
+            border-radius: 8px;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            margin-top: 5%;
+        }
+
+        #word-display {
+            font-size: 24px;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        #letter-input {
+            padding: 10px;
+            font-size: 18px;
+            width: 60%;
+        }
+
+        #try-button {
+            padding: 10px;
+            font-size: 18px;
+            margin-left: 5px;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        #attempts {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        #hangman {
+            margin-bottom: 20px;
+        }
+
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: moveBall 5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(100px, 100px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* رأس الصفحة */
+        header {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .home-button,
+        .contact-icon {
+            background-color: #ffdd59;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .home-button:hover,
+        .contact-icon:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* فهرس الألعاب */
+        .horizontal-sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #ffdd59;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .game-link:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background" id="background">
+        <header>
+            <img src="img/logo.png" alt="اللوجو" class="logo"> <!-- اللوجو -->
+            <button class="home-button" onclick="goToHomePage()">🏠 דף ראשי  🏠</button>
+            <button class="contact-icon" onclick="sendContactMessage()">✉️ הודעה ✉️</button> <!-- زر الرسالة -->
+        </header>
+
+        <div id="game-container">
+            <h1>Hangman Game</h1>
+            <canvas id="hangman" width="200" height="200"></canvas>
+            <div id="word-display">_ _ _ _ _</div>
+            <input type="text" id="letter-input" maxlength="1" placeholder="Enter a letter">
+            <button id="try-button" onclick="guessLetter()">Try</button>
+            <div id="attempts">Attempts left: 6</div>
+            <div id="message"></div>
+        </div>
+        <div class="horizontal-sidebar">
+            <a href="xo.html" class="game-link">XO</a>
+            <a href="chess.html" class="game-link">שחמט</a>
+            <a href="checkers.html" class="game-link">דמקה</a>
+            <a href="puzzle.html" class="game-link">פאזל</a>
+            <a href="taki.html" class="game-link">טאקי</a>
+            <a href="hengedMan.html" class="game-link">האיש התלוי</a>
+            <a href="snake.html" class="game-link">נחש</a>
+        </div>
+
+    </div>
+    <script>
+        function goToHomePage() {
+            window.location.href = "GameCenter.html";
+        }
+
+        function sendContactMessage() {
+            const name = prompt("מה שמך?"); // إدخال الاسم
+            const email = prompt("כתובת האימייל שלך?"); // إدخال الإيميل
+            const message = prompt("הודעתך?"); // إدخال الرسالة
+
+            if (!name || !email || !message) {
+                showMessage("יש למלא את כל השדות!"); // رسالة إذا لم يتم تعبئة الحقول
+                return;
+            }
+
+            showMessage(`תודה ${name}, ההודעה נשלחה!`);
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.innerText = message;
+            messageBox.classList.add("show");
+            setTimeout(() => messageBox.classList.remove("show"), 2000);
+        }
+
+        function addBalls() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                ball.style.left = `${Math.random() * 100}%`;
+                ball.style.top = `${Math.random() * 100}%`;
+                ball.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                ball.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                background.appendChild(ball);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', addBalls);
+
+        let word = "planet";
+        let guessedWord = Array(word.length).fill("_");
+        let attempts = 6;
+
+        function guessLetter() {
+            const input = document.getElementById("letter-input").value.toLowerCase();
+            if (input) {
+                if (word.includes(input)) {
+                    for (let i = 0; i < word.length; i++) {
+                        if (word[i] === input) {
+                            guessedWord[i] = input;
+                        }
+                    }
+                } else {
+                    attempts--;
+                    drawHangman();
+                }
+                updateDisplay();
+            }
+            document.getElementById("letter-input").value = "";
+        }
+
+        function updateDisplay() {
+            document.getElementById("word-display").innerText = guessedWord.join(" ");
+            document.getElementById("attempts").innerText = `Attempts left: ${attempts}`;
+            if (attempts <= 0) {
+                document.getElementById("message").innerText = "You lost! The word was " + word;
+                document.getElementById("try-button").disabled = true;
+                document.getElementById("letter-input").disabled = true;
+            } else if (!guessedWord.includes("_")) {
+                document.getElementById("message").innerText = "Congratulations! You guessed the word!";
+                document.getElementById("try-button").disabled = true;
+                document.getElementById("letter-input").disabled = true;
+            }
+        }
+
+        function drawHangman() {
+            const canvas = document.getElementById("hangman");
+            const ctx = canvas.getContext("2d");
+
+            switch (attempts) {
+                case 5:
+                    // Draw the base
+                    ctx.beginPath();
+                    ctx.moveTo(10, 190);
+                    ctx.lineTo(190, 190);
+                    ctx.stroke();
+                    break;
+                case 4:
+                    // Draw the pole
+                    ctx.beginPath();
+                    ctx.moveTo(50, 190);
+                    ctx.lineTo(50, 20);
+                    ctx.lineTo(150, 20);
+                    ctx.lineTo(150, 40);
+                    ctx.stroke();
+                    break;
+                case 3:
+                    // Draw the head
+                    ctx.beginPath();
+                    ctx.arc(150, 60, 20, 0, Math.PI * 2, true);
+                    ctx.stroke();
+                    break;
+                case 2:
+                    // Draw the body
+                    ctx.beginPath();
+                    ctx.moveTo(150, 80);
+                    ctx.lineTo(150, 140);
+                    ctx.stroke();
+                    break;
+                case 1:
+                    // Draw the left arm
+                    ctx.beginPath();
+                    ctx.moveTo(150, 100);
+                    ctx.lineTo(120, 120);
+                    ctx.stroke();
+                    // Draw the right arm
+                    ctx.beginPath();
+                    ctx.moveTo(150, 100);
+                    ctx.lineTo(180, 120);
+                    ctx.stroke();
+                    break;
+                case 0:
+                    // Draw the left leg
+                    ctx.beginPath();
+                    ctx.moveTo(150, 140);
+                    ctx.lineTo(120, 170);
+                    ctx.stroke();
+                    // Draw the right leg
+                    ctx.beginPath();
+                    ctx.moveTo(150, 140);
+                    ctx.lineTo(180, 170);
+                    ctx.stroke();
+                    break;
+            }
+        }
+
+        updateDisplay();
+    </script>
+</body>
+
+</html>

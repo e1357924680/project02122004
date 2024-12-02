@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candy Crush Clone</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="300" height="300"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const rows = 10;
+    const cols = 10;
+    const tileSize = 30;
+
+    const colors = ["red", "blue", "orange", "brown", "black"];
+    let board = [];
+    let selectedTile = null;
+    let highlightedTile = null;
+    let explosions = [];
+    let fallingTiles = [];
+    let slowMovement = false;
+
+    // Initialize the game board
+    function initializeBoard() {
+      for (let row = 0; row < rows; row++) {
+        board[row] = [];
+        for (let col = 0; col < cols; col++) {
+          board[row][col] = colors[Math.floor(Math.random() * colors.length)];
+        }
+      }
+    }
+
+    // Draw the game board
+    function drawBoard() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          if (board[row][col] !== null) {
+            ctx.fillStyle = board[row][col];
+            ctx.beginPath();
+            ctx.arc(col * tileSize + tileSize / 2, row * tileSize + tileSize / 2, tileSize / 2.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Highlight selected tile
+            if (highlightedTile && highlightedTile.row === row && highlightedTile.col === col) {
+              ctx.strokeStyle = "gold";
+              ctx.lineWidth = 3;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Draw explosions
+      explosions.forEach((explosion, index) => {
+        ctx.beginPath();
+        ctx.arc(explosion.x, explosion.y, explosion.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(255, 165, 0, ${explosion.alpha})`;
+        ctx.fill();
+        ctx.strokeStyle = "orange";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        explosion.radius += 2;
+        explosion.alpha -= 0.05;
+
+        // Remove explosion when it's done
+        if (explosion.alpha <= 0) {
+          explosions.splice(index, 1);
+        }
+      });
+
+      // Draw falling tiles
+      fallingTiles.forEach((fallingTile, index) => {
+        ctx.fillStyle = fallingTile.color;
+        ctx.beginPath();
+        ctx.arc(fallingTile.x, fallingTile.y, tileSize / 2.5, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Update the position of the falling tile
+        fallingTile.y += fallingTile.speed;
+
+        // If the tile reaches its target position, snap it to the grid
+        if (fallingTile.y >= fallingTile.targetY) {
+          board[fallingTile.targetRow][fallingTile.col] = fallingTile.color;
+          fallingTiles.splice(index, 1);
+        }
+      });
+    }
+
+    // Handle mouse click event
+    canvas.addEventListener("click", function(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const col = Math.floor(x / tileSize);
+      const row = Math.floor(y / tileSize);
+
+      if (selectedTile) {
+        // Swap with the selected tile
+        if (
+          (Math.abs(selectedTile.row - row) === 1 && selectedTile.col === col) ||
+          (Math.abs(selectedTile.col - col) === 1 && selectedTile.row === row)
+        ) {
+          swapTiles(selectedTile, { row, col });
+          highlightedTile = null;
+          checkMatches();
+          dropTilesWithAnimation();
+          refillBoard();
+          checkMatches(); // Recheck for new matches after refill
+          dropTilesWithAnimation();
+          refillBoard();
+          selectedTile = null;
+        } else {
+          selectedTile = { row, col };
+          highlightedTile = selectedTile;
+        }
+      } else {
+        selectedTile = { row, col };
+        highlightedTile = selectedTile;
+      }
+      drawBoard();
+    });
+
+    // Swap two tiles
+    function swapTiles(tile1, tile2) {
+      const temp = board[tile1.row][tile1.col];
+      board[tile1.row][tile1.col] = board[tile2.row][tile2.col];
+      board[tile2.row][tile2.col] = temp;
+    }
+
+    // Check for matches of 3 or more
+    function checkMatches() {
+      // Check rows for matches
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols - 2; col++) {
+          if (
+            board[row][col] &&
+            board[row][col] === board[row][col + 1] &&
+            board[row][col] === board[row][col + 2]
+          ) {
+            // Match found - clear tiles and add explosion
+            addExplosion(row, col);
+            addExplosion(row, col + 1);
+            addExplosion(row, col + 2);
+            board[row][col] = null;
+            board[row][col + 1] = null;
+            board[row][col + 2] = null;
+          }
+        }
+      }
+
+      // Check columns for matches
+      for (let col = 0; col < cols; col++) {
+        for (let row = 0; row < rows - 2; row++) {
+          if (
+            board[row][col] &&
+            board[row][col] === board[row + 1][col] &&
+            board[row][col] === board[row + 2][col]
+          ) {
+            // Match found - clear tiles and add explosion
+            addExplosion(row, col);
+            addExplosion(row + 1, col);
+            addExplosion(row + 2, col);
+            board[row][col] = null;
+            board[row + 1][col] = null;
+            board[row + 2][col] = null;
+          }
+        }
+      }
+    }
+
+    // Add explosion effect
+    function addExplosion(row, col) {
+      explosions.push({
+        x: col * tileSize + tileSize / 2,
+        y: row * tileSize + tileSize / 2,
+        radius: 5,
+        alpha: 1.0
+      });
+    }
+
+    // Drop tiles to fill empty spaces with animation
+    function dropTilesWithAnimation() {
+      for (let col = 0; col < cols; col++) {
+        for (let row = rows - 1; row >= 0; row--) {
+          if (board[row][col] === null) {
+            for (let aboveRow = row - 1; aboveRow >= 0; aboveRow--) {
+              if (board[aboveRow][col] !== null) {
+                fallingTiles.push({
+                  color: board[aboveRow][col],
+                  x: col * tileSize + tileSize / 2,
+                  y: aboveRow * tileSize + tileSize / 2,
+                  targetY: row * tileSize + tileSize / 2,
+                  targetRow: row,
+                  col: col,
+                  speed: 5
+                });
+                board[aboveRow][col] = null;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Refill the board after matches
+    function refillBoard() {
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          if (board[row][col] === null) {
+            board[row][col] = colors[Math.floor(Math.random() * colors.length)];
+          }
+        }
+      }
+    }
+
+    // Game loop
+    function gameLoop() {
+      drawBoard();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game
+    initializeBoard();
+    drawBoard();
+    gameLoop();
+  </script>
+</body>
+</html>

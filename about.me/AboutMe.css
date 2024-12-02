@@ -1,0 +1,299 @@
+/* Root Variables for Colors */
+:root {
+    --primary-color: #333;
+    --accent-color: #f0a500;
+    --background-color: #f3f3f3;
+    --text-color: #333;
+    --button-color: #f0a500;
+    --button-text-color: #fff;
+}
+
+/* General Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    scroll-behavior: smooth;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px; /* زيادة التباعد الداخلي */
+}
+
+/* Center Content Styling */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Large Content and Font Sizes */
+.large-content {
+    font-size: 1.2rem;
+    margin-bottom: 40px; /* تباعد أكبر بين الأقسام */
+}
+
+/* Styling for Sections */
+section {
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+/* Header Styling */
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    display: flex; /* تقسيم الرأس إلى قسمين */
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Left section for name and image */
+.header .left-section {
+    display: flex;
+    align-items: center;
+}
+
+.header .left-section img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px; /* تباعد بين الصورة والنص */
+}
+
+.header .left-section h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+/* Right section for navigation links */
+.header .right-section .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.header .right-section .nav-links a {
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.header .right-section .nav-links a:hover {
+    color: var(--accent-color);
+}
+
+
+.header .logo {
+    display: flex;
+    align-items: center;
+}
+
+.header .logo img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px; /* تباعد بين الصورة والنص */
+}
+
+.header h1 {
+    font-size: 2.5rem;
+}
+
+.nav-bar {
+    margin-top: 10px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    
+}
+
+.nav-links a {
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    background: rgba(51, 51, 51, 0.8);
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: #f3f3f3;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sidebar ul li a:hover {
+    color: #ffcc33;
+}
+
+/* Button Styling */
+.button {
+    padding: 15px 25px;
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.button:hover {
+    background: linear-gradient(135deg, #f0a500, #ffcc33);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:active {
+    background-color: #cc8a00;
+}
+
+/* Thumbnail and Images */
+.thumbnail {
+    width: 250px;
+    max-width: 100%;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail:hover {
+    filter: brightness(0.9);
+    transform: scale(1.02);
+}
+
+/* Skills Grid (Horizontal Left-to-Right Layout with Wrap) */
+.skills-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.skills-grid .skill {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.skills-grid .skill img {
+    height: 25px;
+    margin-bottom: 5px;
+}
+
+.skills-grid .skill p {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    .skills-grid .skill {
+        width: 35px;
+    }
+    .skills-grid .skill img {
+        height: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    .skills-grid .skill {
+        width: 100px;
+    }
+    .skills-grid .skill img {
+        height: 10px;
+    }
+    .nav-links {
+        flex-direction: column;
+    }
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer p {
+    margin-bottom: 10px;
+}
+
+/* Social Icons */
+.social-icons img {
+    width: 40px;
+    margin: 0 10px;
+    transition: transform 0.3s;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+/* تباعد أكبر بين عنوان المشاريع والأيقونات */
+#projects h2 {
+    margin-bottom: 30px;
+}
+
+/* Project Icons Layout */
+.project-icons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.project {
+    text-align: center;
+    width: 150px;
+}

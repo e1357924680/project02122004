@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק XO</title>
+    <style>
+        /* إعدادات عامة */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #670c71;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* رأس الصفحة */
+        header {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .home-button,
+        .contact-icon {
+            background-color: #ffdd59;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .home-button:hover,
+        .contact-icon:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* محتوى اللعبة */
+        .content {
+            flex: 1;
+            margin-top: 7.5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #ffdd59;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* لوحة اللعبة */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-template-rows: repeat(3, 80px);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: #333;
+            color: #300bb4;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .cell:hover {
+            background-color: #ffdd59;
+            color: #333;
+            transform: scale(1.1);
+        }
+
+        .reset-button {
+            padding: 8px 15px;
+            background-color: #ff6348;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .reset-button:hover {
+            background-color: #ff4500;
+            transform: scale(1.1);
+        }
+
+        /* الرسائل */
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffdd59;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 2000;
+        }
+
+        .message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* فهرس الألعاب */
+        .horizontal-sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #ffdd59;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .game-link:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: moveBall 5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(100px, 100px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background" id="background">
+        <!-- رأس الصفحة -->
+        <header>
+            <img src="img/logo.png" alt="اللوجو" class="logo"> <!-- اللوجو -->
+            <button class="home-button" onclick="goToHomePage()">🏠 דף ראשי  🏠</button>
+            <button class="contact-icon" onclick="sendContactMessage()">✉️ הודעה ✉️</button> <!-- زر الرسالة -->
+        </header>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="content">
+            <h1>משחק XO</h1>
+            <div class="board" id="board">
+                <div class="cell" onclick="makeMove(this, 0)"></div>
+                <div class="cell" onclick="makeMove(this, 1)"></div>
+                <div class="cell" onclick="makeMove(this, 2)"></div>
+                <div class="cell" onclick="makeMove(this, 3)"></div>
+                <div class="cell" onclick="makeMove(this, 4)"></div>
+                <div class="cell" onclick="makeMove(this, 5)"></div>
+                <div class="cell" onclick="makeMove(this, 6)"></div>
+                <div class="cell" onclick="makeMove(this, 7)"></div>
+                <div class="cell" onclick="makeMove(this, 8)"></div>
+            </div>
+            <button class="reset-button" onclick="resetBoard()">התחל מחדש</button>
+        </div>
+
+        <!-- الرسالة -->
+        <div class="message" id="messageBox"></div>
+
+        <!-- فهرس الألعاب -->
+        <div class="horizontal-sidebar">
+            <a href="xo.html" class="game-link">XO</a>
+            <a href="chess.html" class="game-link">שחמט</a>
+            <a href="dama.html" class="game-link">דמקה</a>
+            <a href="puzzle.html" class="game-link">פאזל</a>
+            <a href="taki.html" class="game-link">טאקי</a>
+            <a href="hengedMan.html" class="game-link">האיש התלוי</a>
+            <a href="snake.html" class="game-link">נחש</a>
+
+        </div>
+    </div>
+    <script>
+        let currentPlayer = "X";
+        const board = Array(9).fill(null);
+
+        function makeMove(cell, index) {
+            if (!board[index]) {
+                board[index] = currentPlayer;
+                cell.innerText = currentPlayer;
+                if (checkWinner()) {
+                    showMessage(`ניצחון! השחקן ${currentPlayer}`);
+                    setTimeout(resetBoard, 2000);
+                } else if (board.every(cell => cell)) {
+                    showMessage("תוצאת תיקו!");
+                    setTimeout(resetBoard, 2000);
+                } else {
+                    currentPlayer = currentPlayer === "X" ? "O" : "X";
+                }
+            }
+        }
+
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            return winningCombinations.some(combination =>
+                combination.every(index => board[index] === currentPlayer)
+            );
+        }
+
+        function resetBoard() {
+            board.fill(null);
+            document.querySelectorAll(".cell").forEach(cell => cell.innerText = "");
+            currentPlayer = "X";
+        }
+
+        function goToHomePage() {
+            window.location.href = "GameCenter.html";
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.innerText = message;
+            messageBox.classList.add("show");
+            setTimeout(() => messageBox.classList.remove("show"), 2000);
+        }
+
+        function sendContactMessage() {
+            const name = prompt("מה שמך?"); // إدخال الاسم
+            const email = prompt("כתובת האימייל שלך?"); // إدخال الإيميل
+            const message = prompt("הודעתך?"); // إدخال الرسالة
+
+            if (!name || !email || !message) {
+                showMessage("יש למלא את כל השדות!"); // رسالة إذا لم يتم تعبئة الحقول
+                return;
+            }
+
+            showMessage(`תודה ${name}, ההודעה נשלחה!`);
+        }
+        function addBalls() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                ball.style.left = `${Math.random() * 100}%`;
+                ball.style.top = `${Math.random() * 100}%`;
+                ball.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                ball.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                background.appendChild(ball);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', addBalls);
+
+    </script>
+</body>
+
+</html>

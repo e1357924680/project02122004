@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ייעוץ חינם</title>
+    <style>
+        /* إعدادات عامة */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            direction: rtl;
+        }
+
+        /* الحاوية الرئيسية */
+.container {
+    display: flex;
+    flex-wrap: wrap; /* للسماح بتفاف العناصر إذا لم تكن المساحة كافية */
+    flex-direction: row; /* ترتيب العناصر بجانب بعضها البعض */
+    width: 90%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+        /* قسم الصورة */
+        .image {
+            flex: 1;
+            min-width: 50%;
+        }
+
+        .image img {
+            padding-top: 5%;
+            width: 60%;
+            height: 90%;
+            object-fit: fill;
+        }
+
+        /* قسم النص والنموذج */
+        .content {
+            flex: 2;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* النموذج */
+        .form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .form input,
+        .form textarea {
+            width: calc(50% - 10px);
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form textarea {
+            width: 100%;
+            resize: none;
+            height: 50px;
+        }
+
+        .form button {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .form button:hover {
+            background-color: #555;
+        }
+
+        /* الأيقونات الاجتماعية */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-right: 10px;
+            gap: 15%;
+            flex-direction: row;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f4a442;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+            transition: background-color 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: #d98c36;
+        }
+
+        /* التوافق مع الهواتف */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .form input,
+            .form textarea {
+                width: 100%;
+            }
+
+            .content {
+                text-align: center;
+            }
+
+            .content h1 {
+                font-size: 2rem;
+            }
+        }
+        .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50vw; /* عرض نصف الشاشة */
+    height: 5px; /* ارتفاع الشريط */
+    background-color: #f4a442; /* اللون البرتقالي */
+}
+.top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50vw; /* عرض نصف الشاشة */
+    height: 5px; /* ارتفاع الشريط */
+    background-color: #f4a442; /* اللون البرتقالي */
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- شريط برتقالي علوي -->
+    <div class="top-bar"></div>
+
+    <!-- شريط برتقالي سفلي -->
+    <div class="bottom-bar"></div>
+
+    <!-- الحاوية الرئيسية -->
+    <div class="container">
+        <div class="image">
+            <img src="img/photo.png" alt="מקום הקפה">
+        </div>
+
+        <!-- قسم النص والنموذج -->
+        <div class="content">
+            <h1>ייעוץ חינם</h1>
+            <p>לקבלת ייעוץ חינם, מוזמנים להשאיר פרטים<br /> ומומחה יחזור אליכם עם מענה.</p>
+
+            <form class="form">
+                <input type="text" placeholder="שם" required>
+                <input type="tel" placeholder="מספר טלפון" required>
+                <input type="email" placeholder="אימייל" required>
+                <textarea placeholder="תגובה" required></textarea>
+                <button type="submit">שלח</button>
+            </form>
+            
+            <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=100003149528224&ref=xav_ig_profile_web" title="פייסבוק">🌐</a>
+                <a href="https://www.instagram.com/ekremahedar/" title="אינסטגרם">📷</a>
+                <a href="https://www.linkedin.com/in/ekrema-shihap-ab2a00300/" title="לינקדאין">💼</a>
+                <a href="https://wa.me/0502332109" target="_blank" title="إرسل رسالة عبر WhatsApp">📞</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

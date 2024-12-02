@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>גלריית תמונות</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #670c71;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        .gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px auto;
+            width: 90%;
+            height: 300px;
+            position: relative;
+        }
+
+        .gallery-item {
+            position: absolute;
+            transition: all 0.5s ease-in-out;
+            cursor: pointer;
+        }
+
+        /* الصور الصغيرة */
+        .gallery-item.small {
+            width: 15%;
+            height: 50%;
+            opacity: 0.7;
+            transform: scale(0.8);
+        }
+
+        .gallery-item.small.left {
+            left: 10%;
+            top: 25%;
+        }
+
+        .gallery-item.small.right {
+            right: 10%;
+            top: 25%;
+        }
+
+        /* الصورة الكبيرة بالمنتصف */
+        .gallery-item.large {
+            width: 40%;
+            height: 100%;
+            z-index: 2;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .nav-btn,
+        .like-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-btn:hover,
+        .like-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .like-btn {
+            background-color: #ff4081;
+        }
+
+        .like-btn:hover {
+            background-color: #c3005f;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffdd59;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 2000;
+        }
+
+        .message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .home-button,
+        .contact-icon {
+            background-color: #ffdd59;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .home-button:hover,
+        .contact-icon:hover {
+            background-color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* الخلفية المتحركة */
+        .background {
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: moveBall 5s infinite ease-in-out;
+        }
+
+        @keyframes moveBall {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(100px, 100px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background" id="background">
+
+        <header>
+            <img src="img/logo.png" alt="اللوجو" class="logo"> <!-- اللوجو -->
+            <button class="home-button" onclick="goToHomePage()">🏠 דף ראשי 🏠</button>
+            <button class="contact-icon" onclick="sendContactMessage()">✉️ הודעה ✉️</button> <!-- زر الرسالة -->
+        </header>
+
+        <h1>גלריית תמונות</h1>
+
+        <div class="gallery-container">
+            <!-- الصور الصغيرة على اليسار -->
+            <div class="gallery-item small left" data-index="0">
+                <img src="img/pic0.jpg" alt="תמונה 1">
+            </div>
+            <div class="gallery-item small left" data-index="1">
+                <img src="img/pic1.png" alt="תמונה 2">
+            </div>
+
+            <!-- الصورة الكبيرة بالمنتصف -->
+            <div class="gallery-item large" data-index="2">
+                <img src="img/pic2.png" alt="תמונה 3">
+            </div>
+
+            <!-- الصور الصغيرة على اليمين -->
+            <div class="gallery-item small right" data-index="3">
+                <img src="img/pic3.png" alt="תמונה 4">
+            </div>
+            <div class="gallery-item small right" data-index="4">
+                <img src="img/pic4.png" alt="תמונה 5">
+            </div>
+        </div>
+
+        <div class="controls-container">
+            <button class="nav-btn" id="prevBtn">הקודם</button>
+            <button class="like-btn" id="likeBtn">לייק</button>
+            <button class="nav-btn" id="nextBtn">הבא</button>
+        </div>
+    </div>
+
+    <script>
+        const items = document.querySelectorAll('.gallery-item');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const likeBtn = document.getElementById('likeBtn');
+        let currentIndex = 2;
+
+        // تحديث العرض بناءً على الصورة الحالية
+        function updateGallery() {
+            items.forEach((item, index) => {
+                item.classList.remove('large', 'small', 'left', 'right');
+
+                if (index === currentIndex) {
+                    item.classList.add('large');
+                } else if (index < currentIndex) {
+                    item.classList.add('small', 'left');
+                } else {
+                    item.classList.add('small', 'right');
+                }
+            });
+        }
+
+        // التنقل بين الصور
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateGallery();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateGallery();
+        });
+
+        // منطق الإعجاب
+        likeBtn.addEventListener('click', () => {
+            alert(`לחצת לייק על תמונה מספר ${currentIndex + 1}`);
+        });
+
+        // تحديث العرض الأولي
+        updateGallery();
+
+        function addBalls() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                ball.style.left = `${Math.random() * 100}%`;
+                ball.style.top = `${Math.random() * 100}%`;
+                ball.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                ball.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                background.appendChild(ball);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', addBalls);
+        function goToHomePage() {
+            window.location.href = "GameCenter.html";
+        }
+
+        function sendContactMessage() {
+            const name = prompt("מה שמך?"); // إدخال الاسم
+            const email = prompt("כתובת האימייל שלך?"); // إدخال الإيميل
+            const message = prompt("הודעתך?"); // إدخال الرسالة
+
+            if (!name || !email || !message) {
+                showMessage("יש למלא את כל השדות!"); // رسالة إذا لم يتم تعبئة الحقول
+                return;
+            }
+
+            showMessage(`תודה ${name}, ההודעה נשלחה!`);
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.innerText = message;
+            messageBox.classList.add("show");
+        }
+
+
+    </script>
+</body>
+
+</html>

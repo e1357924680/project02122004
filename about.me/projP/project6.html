@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חברת משלוחים</title>
+    <style>
+        /* Reset */
+        body, h1, h2, h3, p, input, textarea, button {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: #00c3ff;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Services Section */
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 2rem;
+            background: #f9f9f9;
+        }
+
+        .service {
+            text-align: center;
+            padding: 1rem;
+            margin: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            background: #fff;
+        }
+
+        .service .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+        .contact form, .contact .map {
+            flex: 1;
+            margin: 1rem;
+        }
+
+        .contact form {
+            max-width: 400px;
+        }
+
+        .contact input, .contact textarea, .contact button {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .contact button {
+            background: #00c3ff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+        }
+
+        footer .social-icons a {
+            margin: 0 0.5rem;
+            color: #fff;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>לחשוב מחוץ ל</h1>
+            <p>פתרונות חכמים ושירות איכותי לכל צורך שלכם.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="services">
+            <div class="service">
+                <i class="icon">📍</i>
+                <h3>כתובת אזור</h3>
+                <p>תיאור קצר של השירות.</p>
+            </div>
+            <div class="service">
+                <i class="icon">📦</i>
+                <h3>כתובת אזור</h3>
+                <p>תיאור קצר של השירות.</p>
+            </div>
+            <div class="service">
+                <i class="icon">🔧</i>
+                <h3>כתובת אזור</h3>
+                <p>תיאור קצר של השירות.</p>
+            </div>
+            <div class="service">
+                <i class="icon">💼</i>
+                <h3>כתובת אזור</h3>
+                <p>תיאור קצר של השירות.</p>
+            </div>
+        </section>
+
+        <section class="contact">
+            <form>
+                <h2>הקופסון עלינו</h2>
+                <label for="name">שם מלא:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">אימייל:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">הודעה:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">שליחה</button>
+            </form>
+            <div class="map">
+                <!-- Google Maps Embed -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835434509837!2d144.9559233156805!3d-37.81720974202144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5773cd5d6cda479!2sEnvato!5e0!3m2!1sen!2sus!4v1600221952875!5m2!1sen!2sus"
+                    width="100%" height="300" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=100003149528224&ref=xav_ig_profile_web" title="פייסבוק">🌐</a>
+                <a href="https://www.instagram.com/ekremahedar/" title="אינסטגרם">📷</a>
+                <a href="https://www.linkedin.com/in/ekrema-shihap-ab2a00300/" title="לינקדאין">💼</a>
+                <a href="https://wa.me/0502332109" target="_blank" title="إرسل رسالة عبر WhatsApp">📞</a>
+            </div>
+    </footer>
+</body>
+</html>
